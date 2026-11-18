@@ -3,18 +3,18 @@
 A Data Observatory (DO) demo using Transport for London open data. It shows how much of the
 Tube you can use if you can't use stairs.
 
-![The 4 x 2 simulator showing the Everyone view](docs/wall.webp)
+![The 4 x 2 simulator showing the Step-free only view](docs/wall.webp)
 
 ## The story
 
 The wall shows a map of the Tube, Elizabeth line and DLR. A controller switches between three
 views:
 
-| View               | What changes on the wall                                                                                 |
-| ------------------ | -------------------------------------------------------------------------------------------------------- |
-| **Everyone**       | All 270 Tube stations. Circle size shows how many people use each station.                               |
-| **Step-free only** | Stations with no step-free route from street to platform fade out. 107 stations are left.                |
-| **Busiest gaps**   | The map zooms into central London and the 6 busiest stations without step-free access are coloured pink. |
+| View                 | What changes on the wall                                                                                 |
+| -------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Everyone**         | All 270 Tube stations. Circle size shows how many people use each station.                               |
+| **Step-free only**   | Stations with no step-free route from street to platform fade out. 107 stations are left.                |
+| **Busiest stations** | The map zooms into central London and the 6 busiest stations without step-free access are coloured pink. |
 
 There is also a zoom slider, as in the original starter.
 

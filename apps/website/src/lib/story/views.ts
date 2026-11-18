@@ -20,22 +20,21 @@ export const VIEWS: Record<View, ViewCopy> = {
         label: 'Everyone',
         figure: (s) => String(s.tubeStations),
         figureLabel: () => 'Tube stations',
-        caption: (s) =>
-            `${formatBillions(s.tubeUsage)} journeys a year. This is the Tube most people see.`
+        caption: (s) => `${formatBillions(s.tubeUsage)} entries and exits in ${s.usageYear}.`
     },
     stepfree: {
         label: 'Step-free only',
         figure: (s) => String(s.tubeStepFree),
-        figureLabel: (s) => `of ${s.tubeStations} stations you can use without stairs`,
+        figureLabel: (s) =>
+            `of ${s.tubeStations} Tube stations are step-free from street to platform`,
         caption: (s) =>
-            `${percent(s.tubeNone, s.tubeStations)}% of Tube stations have no step-free route. Trains pass through; you can't get on or off.`
+            `The other ${s.tubeNone} (${percent(s.tubeNone, s.tubeStations)}%) can only be used with stairs or escalators.`
     },
     gaps: {
-        label: 'Busiest gaps',
+        label: 'Busiest stations',
         figure: (s) => formatBillions(s.tubeUsageNone).replace(' billion', 'bn'),
-        figureLabel: () => 'journeys a year at stations with no step-free route',
-        caption: (s) =>
-            `That is ${percent(s.tubeUsageNone, s.tubeUsage)}% of all Tube journeys, including London's busiest stations.`
+        figureLabel: () => 'entries and exits a year at stations without step-free access',
+        caption: (s) => `${percent(s.tubeUsageNone, s.tubeUsage)}% of all Tube entries and exits.`
     }
 };
 

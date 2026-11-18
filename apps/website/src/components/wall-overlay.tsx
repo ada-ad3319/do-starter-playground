@@ -1,5 +1,5 @@
 // Text on the wall, in four blocks that each cover whole screens:
-//   left top: title    left bottom: big number    right top: data    right bottom: credits
+//   left top: title    left bottom: big number    right top: data    right bottom: comparison + credits
 // Every screen draws the whole layer and shifts it by its own position.
 
 import type { CSSProperties, ReactNode } from 'react';
@@ -42,7 +42,7 @@ export function WallOverlay({ c, r, view, stats }: Props) {
                     Step-Free London
                 </h1>
                 <p style={{ fontSize: TYPE.heading, lineHeight: 1.2 }}>
-                    The Tube you can use depends on whether you can use stairs.
+                    How many Tube stations can you use without stairs?
                 </p>
             </Block>
 
@@ -80,10 +80,11 @@ export function WallOverlay({ c, r, view, stats }: Props) {
             </Block>
 
             <Block box={RIGHT_BOTTOM}>
-                <Heading>What would fix it</Heading>
+                <Heading>For comparison</Heading>
                 <p style={{ fontSize: TYPE.body, lineHeight: 1.25 }}>
-                    Every Elizabeth line and DLR station is step-free. Lifts at the busiest gaps
-                    would reach the most people first.
+                    {stats
+                        ? `${stats.modelLines.map((l) => `${l.name}: ${l.stepFree} of ${l.stations} stations step-free`).join('. ')}.`
+                        : ''}
                 </p>
                 <p
                     className="mt-auto"
@@ -149,10 +150,10 @@ function Legend({ view }: { view: View }) {
                 <>
                     <span style={dot(COLORS.stepFree)} />
                     step-free &nbsp; <span style={dot(COLORS.station, 0.3)} />
-                    no step-free route
+                    not step-free
                 </>
             )}
-            {' · size = journeys'}
+            {' · circle size = entries and exits'}
         </p>
     );
 }
@@ -224,11 +225,11 @@ function DataPanel({ view, stats }: { view: View; stats: StoryStats }) {
                 <Heading>The network</Heading>
                 <Figure
                     value={String(stats.tubeLines)}
-                    label="Tube lines, plus the Elizabeth line and DLR"
+                    label="Tube lines (Elizabeth line and DLR also shown)"
                 />
                 <Figure
                     value={formatBillions(stats.tubeUsage).replace(' billion', 'bn')}
-                    label={`Tube entries + exits in ${stats.usageYear}`}
+                    label={`entries and exits in ${stats.usageYear}`}
                 />
             </>
         );
@@ -238,7 +239,7 @@ function DataPanel({ view, stats }: { view: View; stats: StoryStats }) {
         const rows = [...stats.lines.slice(0, 3), ...stats.modelLines];
         return (
             <>
-                <Heading>Stations with step-free access</Heading>
+                <Heading>Step-free stations by line</Heading>
                 {rows.map((line) => (
                     <Bar
                         key={line.id}
@@ -255,7 +256,7 @@ function DataPanel({ view, stats }: { view: View; stats: StoryStats }) {
     const max = stats.busiestGaps[0]?.usage ?? 1;
     return (
         <>
-            <Heading>Busiest, no step-free route</Heading>
+            <Heading>Busiest, no step-free access</Heading>
             {stats.busiestGaps.map((gap) => (
                 <Bar
                     key={gap.index}

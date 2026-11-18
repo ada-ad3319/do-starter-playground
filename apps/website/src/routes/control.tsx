@@ -18,8 +18,8 @@ export const Route = createFileRoute('/control')({
 
 const HINTS = {
     everyone: 'The whole network',
-    stepfree: 'Only stations without stairs',
-    gaps: 'Zoom to the busiest stations without step-free access'
+    stepfree: 'Only step-free stations',
+    gaps: 'Busiest stations without step-free access'
 };
 
 // The tablet: buttons and a slider that send requests to the bus.
