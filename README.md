@@ -3,7 +3,7 @@
 A Data Observatory (DO) demo using Transport for London open data. It shows how much of the
 Tube you can use if you can't use stairs.
 
-> _Screenshot placeholder: add `docs/wall.png` (the simulator at `/`) here._
+![The 4 x 2 simulator showing the Everyone view](docs/wall.webp)
 
 ## The story
 
