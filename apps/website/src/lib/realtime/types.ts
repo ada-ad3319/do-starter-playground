@@ -1,54 +1,29 @@
+import type { Network } from '../story/network';
+
 export type BusMessage = {
-    // Keep message kinds namespaced (`control/*`, `screen/*`).
+    // Keep message kinds namespaced (`control/*`, `show/*`).
     type: string;
     peerId?: string;
     peerCount?: number;
     [key: string]: unknown;
 };
 
+/** everyone: full network. stepfree: only step-free stations. gaps: busiest stations without step-free access. */
+export type View = 'everyone' | 'stepfree' | 'gaps';
+
+/** The shared state sent to every screen and tablet. */
+export type ShowState = {
+    view: View;
+    /** Extra zoom on top of the view's own camera, from the controller slider (0 = none). */
+    zoom: number;
+    /** True while the server steps through the views by itself. */
+    playing: boolean;
+};
+
 export type HelloBusMessage = BusMessage & {
     type: 'hello';
     peerId: string;
-    state?: BusSharedState;
-};
-
-export type ControlSliderMessage = BusMessage & {
-    type: 'control/slider';
-    value: number;
-};
-
-export type ScreenSegmentSelectionMessage = BusMessage & {
-    type: 'screen/segment-selection';
-    indexes: number[];
-};
-
-export type MapCity = 'london' | 'paris' | 'berlin' | 'madrid' | 'rome' | 'amsterdam';
-
-export type BusSharedState = {
-    city: MapCity;
-    zoom: number;
-    selectedSegmentIndexes: number[];
-};
-
-export type ScreenMapViewState = {
-    longitude: number;
-    latitude: number;
-    zoom: number;
-    bearing: number;
-    pitch: number;
-};
-
-export type ScreenMapViewMessage = BusMessage & {
-    type: 'screen/map-view';
-    view: Partial<ScreenMapViewState>;
-    city?: MapCity;
-};
-
-export type ArcSegment = {
-    id: string;
-    start: [number, number];
-    end: [number, number];
-    weight: number;
+    state?: ShowState;
 };
 
 export type EngineRole = 'screen' | 'control';
@@ -75,38 +50,30 @@ export const createInitialEngineStoreState = (role: EngineRole): EngineStoreStat
     lastError: null
 });
 
+export const createInitialShowState = (): ShowState => ({
+    view: 'everyone',
+    zoom: 0,
+    playing: true
+});
+
 export type ControlStoreState = EngineStoreState & {
-    sliderValue: number;
-    isSliderInteracting: boolean;
-    selectedCity: MapCity;
-    selectedSegmentIndexes: number[];
+    show: ShowState;
 };
 
 export type ScreenStoreState = EngineStoreState & {
-    mapView: ScreenMapViewState;
-    arcSegments: ArcSegment[];
-    selectedSegmentIndexes: number[];
-    isArcSegmentsLoading: boolean;
+    show: ShowState;
+    network: Network | null;
+    networkError: string | null;
 };
 
 export const createInitialControlStoreState = (): ControlStoreState => ({
     ...createInitialEngineStoreState('control'),
-    sliderValue: 25,
-    isSliderInteracting: false,
-    selectedCity: 'london',
-    selectedSegmentIndexes: []
+    show: createInitialShowState()
 });
 
 export const createInitialScreenStoreState = (): ScreenStoreState => ({
     ...createInitialEngineStoreState('screen'),
-    mapView: {
-        longitude: -0.1749,
-        latitude: 51.4988,
-        zoom: 9,
-        bearing: 0,
-        pitch: 0
-    },
-    arcSegments: [],
-    selectedSegmentIndexes: [],
-    isArcSegmentsLoading: false
+    show: createInitialShowState(),
+    network: null,
+    networkError: null
 });

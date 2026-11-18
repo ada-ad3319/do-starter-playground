@@ -26,3 +26,10 @@ dist-ssr
 # Dependency directories and files
 node_modules
 .vite*/
+
+# Data pipeline raw downloads (re-creatable with data-pipeline/build_network.py)
+data-pipeline/.raw/
+__pycache__/
+
+# Production build output
+.output/
